@@ -1,0 +1,73 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Django",
+      "type": "shell",
+      "command": "cd back && pipenv run python manage.py runserver 127.0.0.1:8000",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "develop",
+      }
+    },
+    {
+      "label": "Run Migrate",
+      "type": "shell",
+      "command": "cd back && pipenv run python manage.py migrate",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "develop",
+      }
+    },
+    {
+      "label": "Run Makemigrations",
+      "type": "shell",
+      "command": "cd back && pipenv run python manage.py makemigrations",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "develop",
+      }
+    },
+    {
+      "label": "Run SPA",
+      "command": "cd frontend && npm run start",
+      "type": "shell",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    },
+    {
+      "label": "Run SPA TEST",
+      "command": "cd frontend && npm run test",
+      "type": "shell",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    }
+  ]
+}
