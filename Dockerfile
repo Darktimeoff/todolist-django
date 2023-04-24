@@ -5,7 +5,7 @@ FROM python:3.11-alpine AS build
 WORKDIR /code
 
 # install pipenv
-RUN apk add --no-cache build-base postgresql-dev && pip install --upgrade pip && \
+RUN apk add --no-cache build-base postgresql-dev --upgrade bash && pip install --upgrade pip && \
     pip install pipenv
 
 # copy Pipfile and Pipfile.lock to container
@@ -23,8 +23,6 @@ COPY . .
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# expose port for gunicorn
-EXPOSE 8000
+ENTRYPOINT ["sh", "entrypoint.sh"]
 
-# run gunicorn
-CMD ["gunicorn", "todolist.wsgi:application", "--bind", "0.0.0.0:8000"]
+EXPOSE 8000

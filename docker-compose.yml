@@ -4,30 +4,15 @@ services:
     container_name: todolist_back
     ports: 
       - 8000:8000
-    build: ./back
+    build: .
     restart: always
     working_dir: /code/
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DATABASE_URL: ${DATABASE_URL}
     depends_on:
-      migration:
-        condition: service_completed_successfully
       db:
         condition: service_healthy
-    networks:
-      - backend
-
-  migration:
-    build: 
-      context: ./back
-    environment:
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      DATABASE_URL: ${DATABASE_URL}
-    depends_on:
-      db:
-        condition: service_healthy
-    command: ./manage.py migrate
     networks:
       - backend
     
@@ -50,11 +35,9 @@ services:
       - backend
 
   front: 
+    image: sermalenk/skypro-front:lesson-34
     ports:
       - 80:80
-    build: 
-      dockerfile: ./docker/Dockerfile
-      context: ./frontend
     container_name: todolist_front
     restart: always
     networks:
@@ -65,7 +48,6 @@ services:
   
 volumes:
   v-todolist-db:
-  v-todolist-api:
 
 networks:
   backend:

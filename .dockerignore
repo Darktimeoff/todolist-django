@@ -1,3 +1,11 @@
 .env 
 pytest.init
 tests
+.git 
+.github
+.pytest_cache
+.dockerignore
+.vscode
+pytest.ini
+docker-compose.yml
+Dockerfile
