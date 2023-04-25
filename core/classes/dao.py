@@ -20,3 +20,5 @@ class Dao(Generic[T]):
         """raise DoesNotExist exception if not found"""
         return self.query.get(pk=id)
     
+    def create(self, data: dict) -> T:
+        return self.query.create(**data)

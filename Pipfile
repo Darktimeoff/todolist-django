@@ -15,6 +15,7 @@ django-environ = "*"
 drf-spectacular = "*"
 dj-database-url = "*"
 gunicorn = "*"
+pytest-env = "*"
 
 [dev-packages]
 autopep8 = "*"
