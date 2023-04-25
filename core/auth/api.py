@@ -23,7 +23,8 @@ class SignupAPI(CreateAPIView):
     queryset = user_dao.get_all()
 
 class LoginAPI(APIView):
-    def post(self, request: HttpRequest, format=None):
+    def post(self, request: HttpRequest):
+       
         data = json.loads(request.body)
 
         username = data.get('username', None)
