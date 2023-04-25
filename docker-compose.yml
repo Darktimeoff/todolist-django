@@ -2,8 +2,6 @@ version: "3.9"
 services:
   api: 
     container_name: todolist_back
-    ports: 
-      - 8000:8000
     build: .
     restart: always
     working_dir: /code/
@@ -15,8 +13,9 @@ services:
         condition: service_healthy
     networks:
       - backend
-    
   db:
+    ports:
+      - 5433:5432
     restart: always
     container_name: todolist_db
     image: postgres:latest
@@ -37,11 +36,12 @@ services:
   front: 
     image: sermalenk/skypro-front:lesson-34
     ports:
-      - 80:80
+      - 8080:80
     container_name: todolist_front
     restart: always
     networks:
       - backend
+
     depends_on:
       - api
 
