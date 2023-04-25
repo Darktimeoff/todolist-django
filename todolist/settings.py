@@ -160,7 +160,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'core.auth.authentication.CookieJWTAuthentication'
     ]
 }
 
@@ -169,6 +169,18 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Amazing Hunting API',
     'VERSION': '1.0.0',
     'LICENSE': 'MIT'
+}
+
+from datetime import timedelta
+SIMPLE_JWT = {
+  'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+  'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+  'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
+  'AUTH_COOKIE_DOMAIN': None,     # A string like "example.com", or None for standard domain cookie.
+  'AUTH_COOKIE_SECURE': False,    # Whether the auth cookies should be secure (https:// only).
+  'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
+  'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
+  'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
 }
 
 AUTH_USER_MODEL = 'core.User'

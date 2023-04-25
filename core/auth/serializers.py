@@ -6,6 +6,7 @@ from core.user import user_dao
 from core.classes.exceptions import FormatValidationException
 from .message import VALIDATION_PASSWORD_DONT_MATCH, VALIDATION_REQUIRED_FIELD, VALIDATION_UNIQUE_USERNAME
 from django.core.exceptions import ValidationError
+
 class SignupSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         validators=[UniqueValidator(queryset=user_dao.get_all(), message=VALIDATION_UNIQUE_USERNAME)]
@@ -44,6 +45,14 @@ class SignupSerializer(serializers.ModelSerializer):
         user: User = super().create(validated_data)
         user.set_password(validated_data["password"])
 
+        user.save()
+
         self._password_repeat = user.password
 
         return user
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+    
