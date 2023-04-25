@@ -2,7 +2,7 @@ version: "3.9"
 services:
   api: 
     container_name: todolist_back
-    image: ykorolikhin/todolist_django:main
+    image: ykorolikhin/todolist_django:latest
     restart: always
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
