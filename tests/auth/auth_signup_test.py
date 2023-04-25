@@ -21,13 +21,14 @@ def test_success(client):
         "password_repeat": ""
     }
 
-    response = client.post('/api/v1/signup/', request_data, format='json')
-
+    response = client.post('/core/signup', request_data, format='json')
+   
     expected_data['id'] = response.json().get('id')
     expected_data['password'] = response.json().get('password')
     expected_data['password_repeat'] = response.json().get('password_repeat')
 
     assert response.status_code == 201
+    assert request_data['password'] != response.json().get('password')
     assert check_password(request_data['password'], response.json().get('password')) == True
     assert response.json() == expected_data
 
@@ -48,7 +49,7 @@ def test_username_already_exists(client):
         'password': request_data['password']
     })
 
-    response = client.post('/api/v1/signup/', request_data, format='json')
+    response = client.post('/core/signup', request_data, format='json')
 
     assert response.status_code == 400
     assert response.json() == expected_data
@@ -61,7 +62,7 @@ def test_weak_password(client):
         'password_repeat': 'test',
     }
 
-    response = client.post('/api/v1/signup/', request_data, format='json')
+    response = client.post('/core/signup', request_data, format='json')
 
     assert response.status_code == 400
     assert set(response.json().keys()) == {'password'}
@@ -78,7 +79,7 @@ def test_without_password_repeat(client):
         'password_repeat': [VALIDATION_REQUIRED_FIELD]
     }
 
-    response = client.post('/api/v1/signup/', request_data, format='json')
+    response = client.post('/core/signup', request_data, format='json')
 
 
     assert response.status_code == 400
@@ -95,7 +96,7 @@ def test_without_username(client):
         'username': [VALIDATION_REQUIRED_FIELD]
     }
 
-    response = client.post('/api/v1/signup/', request_data, format='json')
+    response = client.post('/core/signup', request_data, format='json')
 
 
     assert response.status_code == 400
@@ -112,7 +113,7 @@ def test_without_password(client):
         'password': [VALIDATION_REQUIRED_FIELD]
     }
 
-    response = client.post('/api/v1/signup/', request_data, format='json')
+    response = client.post('/core/signup', request_data, format='json')
 
 
     assert response.status_code == 400
@@ -127,7 +128,7 @@ def test_empty_request(client):
         'password_repeat': [VALIDATION_REQUIRED_FIELD]
     }
 
-    response = client.post('/api/v1/signup/', request_data, format='json')
+    response = client.post('/core/signup', request_data, format='json')
 
 
     assert response.status_code == 400
