@@ -19,6 +19,15 @@ jobs:
       - name: clone code
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v2
+    
+      - uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+
       - name: create envs file
         run: |
           touch .env
