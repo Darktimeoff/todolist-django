@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: clone code
         uses: actions/checkout@v3
+      
+      - name: Test with pytest
+        run: |
+          pytest
 
       - name: Docker meta
         id: meta
