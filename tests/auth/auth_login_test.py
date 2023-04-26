@@ -2,20 +2,16 @@ import pytest
 from todolist import settings
 import json
 from django.http import HttpResponse
-from core.auth.message import VALIDATION_LOGIN, VALIDATION_REQUIRED_FIELD
+from core.auth.message import VALIDATION_LOGIN
 
 @pytest.mark.django_db
-def test_success(client, user):
-    request_data = {
-        'username': 'test',
-        'password': 'test'
-    }
+def test_success(client, user, login_cread):
     expected_data = {
         'username': user.username,
         'password': user.password
     }
 
-    response: HttpResponse = client.post('/core/login', data=json.dumps(request_data), content_type='application/json')
+    response: HttpResponse = client.post('/core/login', data=json.dumps(login_cread), content_type='application/json')
 
     raw_token = response.cookies.get(settings.SIMPLE_JWT['AUTH_COOKIE']) or None
 
