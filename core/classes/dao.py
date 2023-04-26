@@ -22,3 +22,6 @@ class Dao(Generic[T]):
     
     def create(self, data: dict) -> T:
         return self.query.create(**data)
+    
+    def update(self, id: int, data: dict) -> T:
+        return self.get_by_id(id).update(**data)

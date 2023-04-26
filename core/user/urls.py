@@ -1,6 +1,7 @@
 from django.urls import path
-from .api import UserAPI
+from .api import ProfileAPI, ChangePasswordAPI
 
 urlpatterns = [
-    path('profile', UserAPI.as_view()),
+    path('profile', ProfileAPI.as_view()),
+    path('update_password', ChangePasswordAPI.as_view()),
 ]
