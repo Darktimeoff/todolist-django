@@ -1,9 +1,7 @@
 name: Build and deploy
 
-on:
-  push:
-    tags:
-      - 'v*'
+on: [push]
+
 env:
   DJANGO_SECRET_KEY:  ${{secrets.DJANGO_SECRET_KEY}}
   DATABASE_URL: ${{secrets.DATABASE_URL}}
@@ -14,13 +12,26 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
     steps:
       - name: clone code
         uses: actions/checkout@v3
       
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv sync
+
       - name: Test with pytest
         run: |
-          pytest
+          pipenv run pytest -vv
 
       - name: Docker meta
         id: meta
