@@ -42,20 +42,20 @@ class UpatePasswordSerializer(serializers.Serializer):
         
         if not self._old_passord:
             self._errors['old_password'] = [VALIDAITON_REQUIRED_FIELD]
-            result = False
 
         if not self._new_password:
             self._errors['new_password'] = [VALIDAITON_REQUIRED_FIELD]
-            result = False
-
+    
         if  self._old_passord == self._new_password:
             self._errors['new_password'] = [VALIDAITON_NEW_PASSWORD]
-            result = False
 
         try:
             validate_password(self._new_password)
         except ValidationError as e:
             self._errors['new_password'] = list(e)
+
+        if self._errors:
+            result = False
         
         if raise_exception and not result:
             raise serializers.ValidationError(self.errors)
