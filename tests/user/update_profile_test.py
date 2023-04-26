@@ -36,7 +36,7 @@ def test_unauthorized(client):
 def test_blank_email(client, cookies, user):
     request_data = {
         "username": user.username,
-        "email": 'test@gmail.com',
+        "email": '',
         "first_name": "Yevhenii",
         "last_name": "Korolikhin"
     }
