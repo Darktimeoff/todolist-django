@@ -59,7 +59,7 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USER}}
           key: ${{secrets.SSH_KEY}}
-          source: "deploy/docker-compose.yml, .env"
+          source: "deploy/docker-compose.yml,.env"
           target: "todolist"
           strip_components: 1
 
