@@ -1,0 +1,1 @@
+VALIDATION_UNIQUE_USERNAME = "Username already exists"
