@@ -18,6 +18,15 @@ jobs:
     steps:
       - name: clone code
         uses: actions/checkout@v3
+
+      - name: create envs file
+        run: |
+          touch .env
+          echo "DJANGO_SECRET_KEY=${{secrets.DJANGO_SECRET_KEY}}" >> .env
+          echo "DATABASE_URL=${{secrets.DATABASE_URL}}" >> .env
+          echo "POSTGRES_USER=${{secrets.POSTGRES_USER}} " >> .env
+          echo "POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}}" >> .env
+          echo "POSTGRES_DB=${{secrets.POSTGRES_DB}}" >> .env
     
       - name: Test with pytest
         run: |
@@ -49,31 +58,17 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USER}}
           key: ${{secrets.SSH_KEY}}
-          source: "deploy/docker-compose.yml"
+          source: "deploy/docker-compose.yml, .env"
           target: "todolist"
           strip_components: 1
 
       - name: deploy app
         uses: appleboy/ssh-action@master
-        env:
-          DJANGO_SECRET_KEY:  ${{secrets.DJANGO_SECRET_KEY}}
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
-          POSTGRES_USER:  ${{secrets.POSTGRES_USER}} 
-          POSTGRES_PASSWORD:  ${{secrets.POSTGRES_PASSWORD}}
-          POSTGRES_DB:  ${{secrets.POSTGRES_DB}}
         with:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USER}}
           key: ${{secrets.SSH_KEY}}
-          envs: DJANGO_SECRET_KEY,DATABASE_URL, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
           script: |
-            cd todolist
-            touch .env
-            echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY" >> .env
-            echo "DATABASE_URL=$DATABASE_URL" >> .env
-            echo "POSTGRES_USER=$POSTGRES_USER" >> .env
-            echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
-            echo "POSTGRES_DB=$POSTGRES_DB" >> .env
             docker system prune
             docker rmi $(docker images -f "dangling=true" -q)
             docker compose pull
