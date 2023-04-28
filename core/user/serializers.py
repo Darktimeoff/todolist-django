@@ -19,7 +19,7 @@ class UserUpdateGetSerializer(serializers.ModelSerializer):
 
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
-
+ 
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'email']

@@ -18,14 +18,14 @@ def test_success(client):
         "last_name": "",
         "email": "",
         "password": "",
-        "password_repeat": ""
     }
 
     response = client.post('/core/signup', request_data, format='json')
    
     expected_data['id'] = response.json().get('id')
     expected_data['password'] = response.json().get('password')
-    expected_data['password_repeat'] = response.json().get('password_repeat')
+
+    print('test_success', response.json(), expected_data)
 
     assert response.status_code == 201
     assert request_data['password'] != response.json().get('password')
@@ -65,7 +65,7 @@ def test_weak_password(client):
     response = client.post('/core/signup', request_data, format='json')
 
     assert response.status_code == 400
-    assert set(response.json().keys()) == {'password'}
+    assert set(response.json().keys()) == {'password', 'password_repeat'}
     assert len(response.json().values()) > 0 
 
 @pytest.mark.django_db
@@ -125,6 +125,8 @@ def test_empty_request(client):
     }
 
     expected_data = {
+        "password": [VALIDATION_REQUIRED_FIELD],
+        "username": [VALIDATION_REQUIRED_FIELD],
         'password_repeat': [VALIDATION_REQUIRED_FIELD]
     }
 

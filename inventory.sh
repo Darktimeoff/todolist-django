@@ -2,7 +2,7 @@ docker container prune -f
 
 docker rmi $(docker images -f "dangling=true" -q) || true
 
-docker compose -p todolist-local up -d --build
+docker compose up -d db
 
 pipenv run python manage.py migrate
 
