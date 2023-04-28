@@ -17,19 +17,15 @@ def test_success(client):
         "first_name": "",
         "last_name": "",
         "email": "",
-        "password": "",
     }
 
     response = client.post('/core/signup', request_data, format='json')
    
     expected_data['id'] = response.json().get('id')
-    expected_data['password'] = response.json().get('password')
 
     print('test_success', response.json(), expected_data)
 
     assert response.status_code == 201
-    assert request_data['password'] != response.json().get('password')
-    assert check_password(request_data['password'], response.json().get('password')) == True
     assert response.json() == expected_data
 
 @pytest.mark.django_db

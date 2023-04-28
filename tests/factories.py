@@ -6,7 +6,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
-    username = 'test'
-    _password = 'test'
+    username = 'test@ssss@3434'
+    _password = 'test@ssss@3434'
     
     password = make_password(_password)

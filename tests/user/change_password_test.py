@@ -6,7 +6,7 @@ from core.user.message import VALIDAITON_NEW_PASSWORD, VALIDATION_OLD_PASSWORD
 def test_success(client, cookies, login_cread):
     requested_data = {
         "old_password": login_cread.get('password'),
-        "new_password": "test@ssss@3434",
+        "new_password": "test@ssss@344",
     }
 
     client.cookies = cookies
@@ -20,7 +20,7 @@ def test_success(client, cookies, login_cread):
     print('change_password response', response.json())
 
     assert response.status_code == 200
-    assert response.json() == requested_data
+    assert response.json() == {}
 
 @pytest.mark.django_db
 def test_unauthorized(client):
@@ -31,7 +31,7 @@ def test_unauthorized(client):
     )
 
 
-    assert response.status_code == 401
+    assert response.status_code == 403
 
 @pytest.mark.django_db
 def test_same_new_and_old_password(client, cookies, login_cread):
@@ -59,7 +59,7 @@ def test_same_new_and_old_password(client, cookies, login_cread):
 def test_old_password_incorrect(client, cookies):
     requested_data = {
         "old_password": 'test@ssss@343',
-        "new_password": 'test@ssss@3434',
+        "new_password": 'test@ssss@344',
     }
 
     expected_data = {

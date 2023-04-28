@@ -1,21 +1,13 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from core.models import User
-from django.contrib.auth.password_validation import validate_password
 from core.user import user_dao
 from core.classes.exceptions import FormatValidationException
 from .message import VALIDATION_PASSWORD_DONT_MATCH, VALIDATION_UNIQUE_USERNAME
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
+from core.classes.fields import PasswordField
 
-class PasswordField(serializers.CharField):
-    def __init__(self, *args, **kwargs):
-        kwargs['style'] = {'input_type': 'password'}
-        kwargs.setdefault('write_only', True)
-
-        super().__init__(*args, **kwargs)
-
-        self.validators.append(validate_password)
 
 class SignupSerializer(serializers.ModelSerializer):
     username = serializers.CharField(

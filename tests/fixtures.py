@@ -1,7 +1,6 @@
 import pytest
 import json
 from django.http import HttpResponse
-from todolist.settings import SIMPLE_JWT
 
 @pytest.fixture
 def login_cread(user):
@@ -12,7 +11,7 @@ def login_cread(user):
 
 @pytest.mark.django_db
 @pytest.fixture
-def cookies(client, user, login_cread):
+def cookies(client, login_cread):
     response: HttpResponse = client.post(
         '/core/login', 
         data=json.dumps(login_cread),

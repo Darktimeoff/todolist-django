@@ -1,10 +1,9 @@
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from rest_framework.views import APIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
-from . import user_dao, user_service
+from . import user_dao
 from .serializers import UserUpdateGetSerializer, UpatePasswordSerializer
 from django.contrib.auth import logout
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 
 
 class ProfileAPI(RetrieveUpdateDestroyAPIView):
@@ -21,26 +20,9 @@ class ProfileAPI(RetrieveUpdateDestroyAPIView):
         return  HttpResponse(status=204)
 
 
-class ChangePasswordAPI(APIView):
+class ChangePasswordAPI(UpdateAPIView):
+    serializer_class = UpatePasswordSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        id = self.request.user.pk
-        return user_dao.get_by_id(id)
-    
-    def change_password(self, request, *args, **kwargs):
-        serializer = UpatePasswordSerializer(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-        
-        id = self.request.user.pk
-
-        user_service.change_password(id, **serializer.data)
-
-        return JsonResponse(serializer.data)
-    
-    def put(self, request, *args, **kwargs):
-        return self.change_password(request, *args, **kwargs)
-    
-    def patch(self, request, *args, **kwargs):
-        return self.change_password(request, *args, **kwargs)
+        return self.request.user
