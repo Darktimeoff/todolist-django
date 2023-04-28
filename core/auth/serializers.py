@@ -4,8 +4,9 @@ from core.models import User
 from django.contrib.auth.password_validation import validate_password
 from core.user import user_dao
 from core.classes.exceptions import FormatValidationException
-from .message import VALIDATION_PASSWORD_DONT_MATCH, VALIDATION_REQUIRED_FIELD, VALIDATION_UNIQUE_USERNAME
-from django.core.exceptions import ValidationError
+from .message import VALIDATION_PASSWORD_DONT_MATCH, VALIDATION_UNIQUE_USERNAME
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed
 
 class PasswordField(serializers.CharField):
     def __init__(self, *args, **kwargs):
@@ -27,7 +28,7 @@ class SignupSerializer(serializers.ModelSerializer):
         model = User
         fields = ("id", "username", "first_name", "last_name", "email", "password", 'password_repeat')
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict):
         if attrs.get("password") != attrs.get("password_repeat"):
             raise FormatValidationException('password_repeat', VALIDATION_PASSWORD_DONT_MATCH)
         
@@ -45,7 +46,18 @@ class SignupSerializer(serializers.ModelSerializer):
         return user
 
 class LoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        validators=[]
+    )
     class Meta:
         model = User
-        fields = ['username', 'password']
-     
+        fields = ('username', 'password')
+    
+    def create(self, validated_data: dict):
+        if not (user := authenticate(
+            username=validated_data['username'], 
+            password=validated_data['password']
+        )):
+            raise AuthenticationFailed
+
+        return user

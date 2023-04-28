@@ -2,7 +2,7 @@ import pytest
 from todolist import settings
 import json
 from django.http import HttpResponse
-from core.auth.message import VALIDATION_LOGIN
+from core.auth.message import VALIDATION_LOGIN, VALIDATION_REQUIRED_FIELD
 
 @pytest.mark.django_db
 def test_success(client, user, login_cread):
@@ -13,11 +13,8 @@ def test_success(client, user, login_cread):
 
     response: HttpResponse = client.post('/core/login', data=json.dumps(login_cread), content_type='application/json')
 
-    raw_token = response.cookies.get(settings.SIMPLE_JWT['AUTH_COOKIE']) or None
-
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json() == expected_data
-    assert raw_token is not None
 
 @pytest.mark.django_db
 def test_invalid_username(client, ):
@@ -28,13 +25,12 @@ def test_invalid_username(client, ):
     }
 
     expected_data = {
-        'username': [VALIDATION_LOGIN],
-        'password': [VALIDATION_LOGIN]
+        "detail": "Incorrect authentication credentials."
     }
 
     response = client.post('/core/login', data=json.dumps(request_data), content_type='application/json')
 
-    assert response.status_code == 400
+    assert response.status_code == 403
     assert response.json() == expected_data
 
 @pytest.mark.django_db
@@ -45,8 +41,7 @@ def test_missing_username(client):
     }
 
     expected_data = {
-        'username': [VALIDATION_LOGIN],
-        'password': [VALIDATION_LOGIN]
+        'username': [VALIDATION_REQUIRED_FIELD]
     }
 
     response = client.post('/core/login', data=json.dumps(request_data), content_type='application/json')
@@ -61,8 +56,7 @@ def test_missing_password(client):
     }
 
     expected_data = {
-        'username': [VALIDATION_LOGIN],
-        'password': [VALIDATION_LOGIN]
+        'password': [VALIDATION_REQUIRED_FIELD]
     }
 
     response = client.post('/core/login', data=json.dumps(request_data), content_type='application/json')
@@ -78,12 +72,11 @@ def test_incorrect_password(client, user):
     }
 
     expected_data = {
-        'username': [VALIDATION_LOGIN],
-        'password': [VALIDATION_LOGIN]
+        "detail": "Incorrect authentication credentials."
     }
 
     response = client.post('/core/login', data=json.dumps(request_data), content_type='application/json')
-    assert response.status_code == 400
+    assert response.status_code == 403
     assert response.json() == expected_data
    
 @pytest.mark.django_db
@@ -93,8 +86,8 @@ def test_empty_data(client, user):
     }
 
     expected_data = {
-        'username': [VALIDATION_LOGIN],
-        'password': [VALIDATION_LOGIN]
+        'username': [VALIDATION_REQUIRED_FIELD],
+        'password': [VALIDATION_REQUIRED_FIELD]
     }
 
     response = client.post('/core/login', data=json.dumps(request_data), content_type='application/json')
