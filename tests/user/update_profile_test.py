@@ -30,7 +30,7 @@ def test_success(client, cookies, user):
 @pytest.mark.django_db
 def test_unauthorized(client):
     response = client.put('/core/profile')
-    assert response.status_code == 401
+    assert response.status_code == 403
 
 @pytest.mark.django_db
 def test_blank_email(client, cookies, user):

@@ -1,32 +1,26 @@
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from . import user_dao, user_service
 from .serializers import UserUpdateGetSerializer, UpatePasswordSerializer
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.utils.decorators import method_decorator
 from django.contrib.auth import logout
 from django.http import HttpResponse, JsonResponse
-from todolist.settings import SIMPLE_JWT
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class ProfileAPI(RetrieveUpdateDestroyAPIView):
     queryset = user_dao.get_all()
     serializer_class = UserUpdateGetSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        id = self.request.user.pk
-        return user_dao.get_by_id(id)
+        return self.request.user
     
-    def delete(self, request):
+    def delete(self, request, *args, **kwargs):
         logout(request)
-        response: HttpResponse = HttpResponse(status=204)
-        response.delete_cookie(SIMPLE_JWT['AUTH_COOKIE'])
 
-        return response
+        return  HttpResponse(status=204)
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class ChangePasswordAPI(APIView):
     permission_classes = [IsAuthenticated]
 

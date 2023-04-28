@@ -22,4 +22,4 @@ def test_success(client, cookies, user):
 def test_unauthorized(client):
     response = client.get('/core/profile')
 
-    assert response.status_code == 401
+    assert response.status_code == 403

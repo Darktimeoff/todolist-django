@@ -8,21 +8,16 @@ from .message import VALIDATION_UNIQUE_USERNAME, VALIDAITON_NEW_PASSWORD, VALIDA
 from django.core.exceptions import ValidationError
 
 class UserUpdateGetSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    
     username = serializers.CharField(
         validators=[UniqueValidator(queryset=user_dao.get_all(), message=VALIDATION_UNIQUE_USERNAME)],
         required=False
     )
 
-    email = serializers.EmailField(validators=[validate_email], required=False)
-
-    first_name = serializers.CharField(required=False)
-    last_name = serializers.CharField(required=False)
+    email = serializers.EmailField(validators=[validate_email])
  
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        fields = ('id', 'username', 'first_name', 'last_name', 'email')
     
 class UpatePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(

@@ -12,8 +12,6 @@ def test_success(client, cookies):
     ) 
 
     assert response.status_code == 204
-    assert SIMPLE_JWT['AUTH_COOKIE'] in response.cookies
-    assert response.cookies.get(SIMPLE_JWT['AUTH_COOKIE']).value == ''
 
 @pytest.mark.django_db
 def test_unauthorized(client):
@@ -21,4 +19,4 @@ def test_unauthorized(client):
         '/core/profile',
     ) 
 
-    assert response.status_code == 401
+    assert response.status_code == 403
