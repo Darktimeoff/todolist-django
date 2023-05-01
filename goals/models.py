@@ -21,7 +21,7 @@ class BaseModel(models.Model):
 
 class GoalCategory(BaseModel):
     title = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=60)
+    slug = models.SlugField(max_length=60, blank=True, default='')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
