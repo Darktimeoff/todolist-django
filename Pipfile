@@ -16,6 +16,7 @@ drf-spectacular = "*"
 dj-database-url = "*"
 gunicorn = "*"
 pytest-env = "*"
+django-filter = "*"
 
 [dev-packages]
 autopep8 = "*"
