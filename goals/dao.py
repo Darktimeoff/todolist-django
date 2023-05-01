@@ -17,10 +17,6 @@ class GoalCategoryDAO(Dao[GoalCategory]):
         return super().get_all().filter(user=user)
     
     def delete(self, category: int | GoalCategory) -> GoalCategory:
-        category: GoalCategory = self.get_by_id(category) if type(category) is int else category
+        id = category if type(category) is int else category.pk
 
-        category.is_deleted = True
-
-        category.save()
-
-        return category
+        return  super().delete(id)

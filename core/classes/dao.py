@@ -25,3 +25,6 @@ class Dao(Generic[T]):
     
     def update(self, id: int, data: dict) -> T:
         return self.get_by_id(id).update(**data)
+    
+    def delete(self, id: int) -> T:
+        return self.get_by_id(id).delete()
