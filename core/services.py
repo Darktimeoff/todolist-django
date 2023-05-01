@@ -2,6 +2,7 @@ from .dao import UserDao
 from rest_framework.serializers import ValidationError
 from .message import VALIDATION_OLD_PASSWORD
 from core.models import User
+
 class UserService:
     dao: UserDao
 

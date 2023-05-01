@@ -1,5 +1,5 @@
 from .dao import UserDao
-from .service import UserService
+from .services import UserService
 
 user_dao = UserDao()
 user_service = UserService(user_dao)

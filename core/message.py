@@ -1,0 +1,8 @@
+VALIDATION_UNIQUE_USERNAME = "Username already exists"
+VALIDATION_OLD_PASSWORD = "Old password is incorrect."
+VALIDAITON_NEW_PASSWORD = "New password same as old password."
+VALIDAITON_REQUIRED_FIELD = "This field is required."
+VALIDATION_PASSWORD_DONT_MATCH = "Password dont match"
+VALIDATION_REQUIRED_FIELD = "This field is required."
+VALIDATION_UNIQUE_USERNAME = "Username already exists"
+VALIDATION_LOGIN = "username or password is incorrect"

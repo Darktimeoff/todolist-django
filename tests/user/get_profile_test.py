@@ -1,5 +1,4 @@
 import pytest
-from django.test import RequestFactory
 
 @pytest.mark.django_db
 def test_success(client, cookies, user):

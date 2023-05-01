@@ -1,6 +1,6 @@
 import pytest
 import json
-from core.user.message import VALIDAITON_NEW_PASSWORD, VALIDATION_OLD_PASSWORD
+from core.message import VALIDAITON_NEW_PASSWORD, VALIDATION_OLD_PASSWORD
 
 @pytest.mark.django_db
 def test_success(client, cookies, login_cread):

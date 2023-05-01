@@ -1,7 +1,6 @@
 import pytest
-from django.contrib.auth.hashers import check_password
-from core.auth.message import VALIDATION_REQUIRED_FIELD, VALIDATION_UNIQUE_USERNAME
-from core.user import user_dao
+from core.message import VALIDATION_REQUIRED_FIELD, VALIDATION_UNIQUE_USERNAME
+from core.container import user_dao
 
 @pytest.mark.django_db
 def test_success(client):

@@ -1,8 +1,7 @@
 import pytest
-from todolist import settings
 import json
 from django.http import HttpResponse
-from core.auth.message import VALIDATION_LOGIN, VALIDATION_REQUIRED_FIELD
+from core.message import VALIDATION_REQUIRED_FIELD
 
 @pytest.mark.django_db
 def test_success(client, user, login_cread):

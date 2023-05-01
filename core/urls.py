@@ -1,4 +1,14 @@
-from core.auth import urls as auth_urls
-from core.user import urls as user_urls
+from django.urls import path
+from .api import ProfileAPI, ChangePasswordAPI, SignupAPI, LoginAPI
 
-urlpatterns = auth_urls.urlpatterns + user_urls.urlpatterns
+user_urls = [
+    path('profile', ProfileAPI.as_view(), name='profile'),
+    path('update_password', ChangePasswordAPI.as_view(), name='update_password')
+]
+
+auth_urls = [
+     path('signup', SignupAPI.as_view(), name='signup'),
+    path('login', LoginAPI.as_view(), name='login')
+]
+
+urlpatterns = auth_urls + user_urls

@@ -1,7 +1,5 @@
 import pytest
-import json
 from django.http import HttpResponse
-from todolist.settings import SIMPLE_JWT
 
 @pytest.mark.django_db
 def test_success(client, cookies):
