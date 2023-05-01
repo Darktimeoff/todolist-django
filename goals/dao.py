@@ -11,7 +11,7 @@ class GoalCategoryDAO(Dao[GoalCategory]):
         super().__init__(GoalCategory, ordering)
 
     def get_all(self) -> BaseManager[GoalCategory]:
-        return super().get_all().filter(self.SHOW_FILTER)
+        return super().get_all().filter(self.SHOW_FILTER).select_related('user')
 
     def get_all_by_user(self, user: User) -> BaseManager[GoalCategory]:
         return super().get_all().filter(user=user)
