@@ -12,7 +12,7 @@ class SignupAPI(CreateAPIView):
     serializer_class = SignupSerializer
     queryset = user_dao.get_all()
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class LoginAPI(CreateAPIView):
     serializer_class = LoginSerializer
     queryset = user_dao.get_all()

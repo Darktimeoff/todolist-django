@@ -9,13 +9,13 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import GoalDateFilter
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class CategoryCreateAPI(CreateAPIView):
     queryset = goal_category_dao.get_all()
     serializer_class = GoalCategoryCreateSerializer
     permission_classes = [IsAuthenticated]
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class CategoryListAPI(ListAPIView):
     permission_classes = [IsAuthenticated]
     pagination_class = LimitOffsetPagination
@@ -31,7 +31,7 @@ class CategoryListAPI(ListAPIView):
     def get_queryset(self):
         return goal_category_dao.get_all_by_user(self.request.user) # type: ignore
 
-@method_decorator(ensure_csrf_cookie, name='dispatch') 
+ 
 class CategoryAPI(RetrieveUpdateDestroyAPIView):
     serializer_class = GoalCategorySerializer
     permission_classes = [IsAuthenticated]
@@ -41,13 +41,13 @@ class CategoryAPI(RetrieveUpdateDestroyAPIView):
         return goal_category_dao.get_all_by_user(self.request.user)
 
     
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class GoalCreateAPI(CreateAPIView):
     queryset = goal_dao.get_all()
     serializer_class = GoalCreateSerializer
     permission_classes = [IsAuthenticated]
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class GoalAPI(RetrieveUpdateDestroyAPIView):
     serializer_class = GoalSerializer
     permission_classes = [IsAuthenticated]
@@ -56,7 +56,7 @@ class GoalAPI(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return goal_dao.get_all_by_user(self.request.user)
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class GoalListAPI(ListAPIView):
     queryset = goal_dao.get_all()
     serializer_class = GoalSerializer
@@ -76,13 +76,13 @@ class GoalListAPI(ListAPIView):
     def get_queryset(self):
         return goal_dao.get_all_by_user(self.request.user)  # type: ignore
     
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class GoalCommentCreateAPI(CreateAPIView):
     queryset = goal_comment_dao.get_all()
     serializer_class = GoalCommentSerializer
     permission_classes = [IsAuthenticated]
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
+
 class GoalListCommentAPI(ListAPIView):
     queryset = goal_comment_dao.get_all()
     serializer_class = GoalCommentSerializer
