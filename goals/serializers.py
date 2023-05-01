@@ -3,7 +3,7 @@ from .models import GoalCategory, Goal, GoalComment
 from core.serializers import UserUpdateGetSerializer
 from .container import goal_service
 
-CATEGORY_READONLY_FIELDS = ("id", "created_at", "updated_at", "user")
+CATEGORY_READONLY_FIELDS = ("id", "created_at", "updated_at", "user", "is_deleted")
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
