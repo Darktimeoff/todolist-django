@@ -92,3 +92,7 @@ class Goal(BaseModel):
         return self
    
 
+class GoalComment(BaseModel):
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    text = models.CharField(max_length=1000)

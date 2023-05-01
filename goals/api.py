@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
-from .container import goal_category_dao, goal_dao
+from .container import goal_category_dao, goal_dao, goal_comment_dao
 from rest_framework.permissions import IsAuthenticated
-from .serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, GoalSerializer
+from .serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, GoalSerializer, GoalCommentSerializer, GoalCommentCreateSerializer
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from rest_framework.pagination import LimitOffsetPagination
@@ -75,3 +75,34 @@ class GoalListAPI(ListAPIView):
 
     def get_queryset(self):
         return goal_dao.get_all_by_user(self.request.user)  # type: ignore
+    
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GoalCommentCreateAPI(CreateAPIView):
+    queryset = goal_comment_dao.get_all()
+    serializer_class = GoalCommentSerializer
+    permission_classes = [IsAuthenticated]
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GoalListCommentAPI(ListAPIView):
+    queryset = goal_comment_dao.get_all()
+    serializer_class = GoalCommentSerializer
+    pagination_class = LimitOffsetPagination
+    permission_classes = [IsAuthenticated]
+    filter_backends = (
+        DjangoFilterBackend,
+        OrderingFilter,
+    )
+    filterset_fields = ('goal',)
+    ordering = "-id"
+
+    def get_queryset(self):
+        return goal_comment_dao.get_all_by_user(self.request.user)  # type: ignore
+    
+class GoalCommentAPI(RetrieveUpdateDestroyAPIView):
+    queryset = goal_comment_dao.get_all()
+    serializer_class = GoalCommentSerializer
+    permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        return goal_comment_dao.get_all_by_user(self.request.user)  # type: ignore

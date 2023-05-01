@@ -1,5 +1,5 @@
 from django.urls import path
-from .api import CategoryCreateAPI, CategoryListAPI,GoalCreateAPI, GoalListAPI, GoalAPI
+from .api import CategoryCreateAPI, CategoryListAPI,GoalCreateAPI, GoalListAPI, GoalAPI, GoalCommentAPI, GoalCommentCreateAPI, GoalListCommentAPI
 
 category = [
     path('goal_category/create', CategoryCreateAPI.as_view(), name='goal_category_create'),
@@ -13,4 +13,10 @@ goal = [
     path('goal/<int:pk>', GoalAPI.as_view(), name='goal'),
 ]
 
-urlpatterns = category + goal
+comment = [
+    path('comment/create', GoalCommentCreateAPI.as_view(), name='comment_create'),
+    path('comment/list', GoalListCommentAPI.as_view(), name='comment_list'),
+    path('comment/<int:pk>', GoalCommentAPI.as_view(), name='comment'),
+]
+
+urlpatterns = category + goal + comment
