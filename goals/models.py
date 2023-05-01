@@ -8,16 +8,8 @@ class BaseModel(models.Model):
         abstract = True
 
     is_deleted = models.BooleanField(default=False)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created_at = timezone.now()
-
-        self.updated_at = timezone.now()
-        
-        return super().save(*args, **kwargs)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class GoalCategory(BaseModel):
     title = models.CharField(max_length=50)
