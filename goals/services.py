@@ -14,7 +14,7 @@ class GoalService:
 
     def validate_category(self, category_id: int, user: User):
         """raise ValidationError if category is not found, user not owner, category is deleted"""
-        category = self.category_dao.get_by_id(category_id)
+        category = self.category_dao.get_by_id(category_id) if type(category_id) is int else category_id
 
         if category.is_deleted:
             raise ValidationError({"category": [VALIDATION_NOT_ALLOWED_FOR_DELETED_CATEGORY]})
@@ -25,7 +25,7 @@ class GoalService:
         return category
     
     def validate_comment(self, goal_id: int, user: User):
-        goal = self.dao.get_by_id(goal_id)
+        goal = self.dao.get_by_id(goal_id) if type(goal_id) is int else goal_id
 
 
         if goal.is_deleted or goal.status == goal.Status.archived:

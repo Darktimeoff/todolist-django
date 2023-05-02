@@ -41,7 +41,6 @@ class GoalCreateSerializer(serializers.ModelSerializer):
     
 class GoalSerializer(serializers.ModelSerializer):
     user = UserUpdateGetSerializer(read_only=True)
-    category = GoalCategorySerializer(read_only=True)
 
     class Meta:
         model = Goal
@@ -50,7 +49,7 @@ class GoalSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         category: int = attrs.get("category")
-        user = attrs.get("user")
+        user = self.context['request'].user
 
         goal_service.validate_category(category, user)
         
@@ -66,26 +65,25 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate(self, attrs):
-        category: int = attrs.get("category")
-        user = attrs.get("user")
+        goal: int = attrs.get("goal")
+        user = self.context['request'].user
 
-        goal_service.validate_category(category, user)
+        goal_service.validate_comment(goal, user)
         
         return attrs
     
 class GoalCommentSerializer(serializers.ModelSerializer):
     user = UserUpdateGetSerializer(read_only=True)
-    goal = GoalSerializer(read_only=True)
 
     class Meta:
-        model = Goal
+        model = GoalComment
         read_only_fields = GOAL_READONLY_FIELDS
         fields = '__all__'
 
     def validate(self, attrs):
-        category: int = attrs.get("category")
-        user = attrs.get("user")
+        goal: int = attrs.get("goal")
+        user = self.context['request'].user
 
-        goal_service.validate_category(category, user)
+        goal_service.validate_comment(goal, user)
         
         return attrs

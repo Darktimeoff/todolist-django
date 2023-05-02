@@ -33,6 +33,8 @@ class GoalCategory(BaseModel):
 
         for goal in goals:
             goal.status = goal.Status.archived
+            goal.is_deleted = True
+            goal.save()
 
         self.save()
 
@@ -85,6 +87,6 @@ class Goal(BaseModel):
    
 
 class GoalComment(BaseModel):
-    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    goal = models.ForeignKey(Goal, related_name="comments", on_delete=models.PROTECT)
+    user = models.ForeignKey(User, related_name="comments", on_delete=models.PROTECT)
     text = models.CharField(max_length=1000)
