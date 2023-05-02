@@ -8,8 +8,8 @@ class BaseModel(models.Model):
         abstract = True
 
     is_deleted = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 class GoalCategory(BaseModel):
     title = models.CharField(max_length=50)
