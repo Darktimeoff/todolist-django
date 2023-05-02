@@ -6,7 +6,7 @@ class GoalCategoryAdmin(admin.ModelAdmin):
     list_display_links = ('title', )
     search_fields = ('title', )
     list_filter = ('is_deleted', )
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created', 'updated')
 
 admin.site.register(GoalCategory, GoalCategoryAdmin) 
 admin.site.register(Goal)

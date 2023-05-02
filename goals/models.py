@@ -55,7 +55,7 @@ class Goal(BaseModel):
         critical = 4, "Высокий"
 
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000, blank=True, default='')
 
     slug = models.SlugField(max_length=60, blank=True, default='')
     
