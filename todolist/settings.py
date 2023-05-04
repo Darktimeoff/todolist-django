@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'core',
-    'goals'
+    'goals',
+    'bot'
 ]
 
 MIDDLEWARE = [
@@ -184,3 +185,5 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'core.User'
+
+BOT_TOKEN = env('BOT_TOKEN')

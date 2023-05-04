@@ -17,6 +17,9 @@ dj-database-url = "*"
 gunicorn = "*"
 pytest-env = "*"
 django-filter = "*"
+marshmallow = "*"
+marshmallow-dataclass = "*"
+requests = "*"
 
 [dev-packages]
 autopep8 = "*"
