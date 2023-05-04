@@ -11,11 +11,45 @@ class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+class Board(BaseModel):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, blank=True, default='')
+
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title, allow_unicode=True)
+        
+        return super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        categories = self.categories.all()
+
+        for category in categories:
+            category.delete()
+
+class BoardParticipant(BaseModel):
+    class Meta:
+        unique_together = ("board", "user")
+
+    class Role(models.IntegerChoices):
+        owner = 1, "Владелец"
+        writer = 2, "Администратор"
+        reader = 3, "Читатель"
+
+    board = models.ForeignKey(Board, on_delete=models.PROTECT, related_name='participants')
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='participants')
+    role = models.PositiveSmallIntegerField(choices=Role.choices, default=Role.owner)
+
 class GoalCategory(BaseModel):
     title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=60, blank=True, default='')
 
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='categories')
+    board = models.ForeignKey(Board, on_delete=models.PROTECT, related_name='categories')
 
     def __str__(self):
         return self.slug

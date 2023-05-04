@@ -34,7 +34,7 @@ services:
       - backend
 
   front: 
-    image: sermalenk/skypro-front:lesson-36
+    image: sermalenk/skypro-front:lesson-37
     ports:
       - 80:80
     container_name: todolist_front
