@@ -5,28 +5,62 @@ from rest_framework.generics import (CreateAPIView, ListAPIView,
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 
-from .container import goal_category_dao, goal_comment_dao, goal_dao
+from .container import board_dao, goal_category_dao, goal_comment_dao, goal_dao
 from .filters import GoalDateFilter
-from .serializers import (GoalCategoryCreateSerializer, GoalCategorySerializer,
-                          GoalCommentCreateSerializer, GoalCommentSerializer,
-                          GoalCreateSerializer, GoalSerializer)
+from .permissions import (BoardPermissions, CategoryCreatePermissions,
+                          CategoryPermissions, CommentCreatePermissions,
+                          GoalPermissions)
+from .serializers import (BoardCreateSerializer, BoardListSerializer,
+                          BoardSerializer, GoalCategoryCreateSerializer,
+                          GoalCategorySerializer, GoalCommentCreateSerializer,
+                          GoalCommentSerializer, GoalCreateSerializer,
+                          GoalSerializer)
+
+
+class BoardCreateAPI(CreateAPIView):
+    queryset = board_dao.get_all()
+    serializer_class = BoardCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class BoardListAPI(ListAPIView):
+    queryset = board_dao.get_all()
+    serializer_class = BoardListSerializer
+    pagination_class = LimitOffsetPagination
+    permission_classes = [IsAuthenticated, BoardPermissions]
+    ordering_fields = ('title', 'slug', )
+    search_fields = ('title', 'slug', )
+
+    def get_queryset(self):
+        return board_dao.get_all_by_user(self.request.user)
+
+
+class BoardAPI(RetrieveUpdateDestroyAPIView):
+    queryset = board_dao.get_all()
+    serializer_class = BoardSerializer
+    permission_classes = [IsAuthenticated, BoardPermissions]
+
+    def get_queryset(self):
+        return board_dao.get_all_by_user(self.request.user)
 
 
 class CategoryCreateAPI(CreateAPIView):
     queryset = goal_category_dao.get_all()
     serializer_class = GoalCategoryCreateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, CategoryCreatePermissions]
 
 
 class CategoryListAPI(ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, CategoryPermissions]
     pagination_class = LimitOffsetPagination
     filter_backends = (
+        DjangoFilterBackend,
         OrderingFilter,
         SearchFilter,
     )
     serializer_class = GoalCategorySerializer
     queryset = goal_category_dao.get_all()
+    filterset_fields = ('board', )
     ordering_fields = ('title', "created_at",)
     search_fields = ('title',)
 
@@ -37,7 +71,7 @@ class CategoryListAPI(ListAPIView):
 
 class CategoryAPI(RetrieveUpdateDestroyAPIView):
     serializer_class = GoalCategorySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, CategoryPermissions]
     queryset = goal_category_dao.get_all()
 
     def get_queryset(self):
@@ -52,7 +86,7 @@ class GoalCreateAPI(CreateAPIView):
 
 class GoalAPI(RetrieveUpdateDestroyAPIView):
     serializer_class = GoalSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, GoalPermissions]
     queryset = goal_dao.get_all()
 
     def get_queryset(self):
@@ -82,7 +116,7 @@ class GoalListAPI(ListAPIView):
 class GoalCommentCreateAPI(CreateAPIView):
     queryset = goal_comment_dao.get_all()
     serializer_class = GoalCommentCreateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, CommentCreatePermissions]
 
 
 class GoalListCommentAPI(ListAPIView):

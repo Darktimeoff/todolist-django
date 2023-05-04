@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import GoalCategory, Goal, GoalComment
+from .models import GoalCategory, Goal, GoalComment, Board, BoardParticipant
 
 class GoalCategoryAdmin(admin.ModelAdmin):
     list_display = ('id','title', 'user', 'is_deleted')
@@ -11,3 +11,5 @@ class GoalCategoryAdmin(admin.ModelAdmin):
 admin.site.register(GoalCategory, GoalCategoryAdmin) 
 admin.site.register(Goal)
 admin.site.register(GoalComment)
+admin.site.register(Board)
+admin.site.register(BoardParticipant)

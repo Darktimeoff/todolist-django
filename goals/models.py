@@ -19,8 +19,7 @@ class Board(BaseModel):
         return self.title
     
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title, allow_unicode=True)
+        self.slug = slugify(self.title, allow_unicode=True)
         
         return super().save(*args, **kwargs)
     
@@ -56,8 +55,7 @@ class GoalCategory(BaseModel):
 
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title, allow_unicode=True)
+        self.slug = slugify(self.title, allow_unicode=True)
         
         return super().save(*args, **kwargs)
     
@@ -105,8 +103,7 @@ class Goal(BaseModel):
         return self.slug
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title, allow_unicode=True)
+        self.slug = slugify(self.title, allow_unicode=True)
         
         return super().save(*args, **kwargs)
 
